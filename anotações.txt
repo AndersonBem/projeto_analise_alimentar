@@ -1,0 +1,1565 @@
+                                                                        Dia 01
+
+                                                                Curso Django: Templates e boas práticas.
+                                                                01.04 virtualenv
+
+    1-  Criei uma pasta para o projeto e arrastei pro visualcode, depois !!!ctrl+j/!!! pra abrir o terminal
+    2-  Na aula, os comandos do terminal são pra mac, vou anotar os do windows.
+        Para ver a versão !!python -m virtualenv --version!!
+        Para criar a venv !!python -m virtualenv venv!!
+        !!Ctrl-L!! para limpar o terminal
+
+    3-  Usei o comando para criar a venv e agora o comando para ativar a venv que é : !! venv/Scripts/activate   !!  
+
+                                                        !!   
+                                                        Essa ativação deu um erro que precisei da ajuda no forum da alura para resolver, é um problema no PowerShell:
+                                                        O erro que está sendo apresentado está informando que a execução de script está desabilitada. Usando o terminal
+                                                         aberto no VsCode estamos fazendo o uso do PowerShell. Será necessário realizar a liberação de execução de script
+                                                          no PowerShell, para isso basta seguir os passos abaixo:
+                                                        O link para duvida no forum é este:
+                                                        https://cursos.alura.com.br/forum/topico-ativacao-do-projeto-esta-dando-erro-302126  
+
+                                                        Abrir PowerShell como adm, usar o comando:
+                                                          Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
+                                                        Digitar S e enter
+                                                        Voltar pro visual e ativar novamente com o venv/Scripts/activate 
+                                                        !!
+    4-  Agora vou instalar o Django na venv, isso vai fazer com que esse projeto tenha sempre a mesma versão e não causar bugs futuros. O comando foi pip install django.
+                                                              
+                                                                01.05 Servidor
+
+    1-  pip freeze > requirements.txt Para salvar o que precisa para o projeto. Sempre que instalar algo com o pip, usar esse comando.
+
+    2-  !!django-admin help!! mostra todos os comandos django
+
+    3-  !!django-admin startproject setup .!! para começar o projeto, o setup . é padrão de nome do projeto
+        Isso criou a pasta do projeto em si, com nome de setup, com os arquivos djangos.
+        Dentro da pasta raiz do projeto,NÃO É A PASTA SETUP, apareceu o arquivo manage.py, ele é 
+      responsavel por rodar varios comandos do django, além de subir o servidor.
+
+    4-  !!python manage.py runserver!! para rodar o servidor    
+
+                                      Dia 1,5
+                                  Curso Django: Templates e boas práticas.
+                                  02.02 idioma e timezone
+
+    1-  O settings.py fica a configuração da aplicação 
+        Lá alterei para pt-br e timezone para America/Sao_Paulo
+
+                                  
+                                     Dia 1,75 (Passar para o outro projeto)
+                                Curso Django: Templates e boas práticas.
+                                02.03 Variáveis de ambiente
+
+    1- Todo projeto django tem uma secret key, para manter meu projeto no git, não posso
+    enviar essa secret. Para coisas que n quero enviar pro git e deixar publicas, vamos
+    criar variaveis de ambientes, que só são usadas no desenvolvimento de projetos. 
+
+    2-  instalar o python dotenv com o pip !! pip install python-dotenv !! agora mandar pro 
+    requirements.
+
+    3-  Criei um arquivo na pasta raiz com nome de .env e coloquei a secret key lá.
+
+    4- No setting, apagar a secret key deixando apenas SECRET_KEY = ''
+    Preciso importar o os junto com os path, para poder conseguir manipular 
+    os arquivos e importar o dotenv, assim : from dotenv import load_dotenv.
+    Logo abaixo criar a função load_dotenv() para quando o arquivo for carregado
+    ele carregar as variaveis de ambiente. 
+
+    5-  Onde tinha a secre key, vc vai substituir por 
+    SECRET_KEY = str(os.getenv('SECRET_KEY'))
+      Aqui vc está transformando tudo em string, depois com os está entrando nos
+    arquivos, depois ta mandando pegar (get) as variaveis de ambiente no .env
+    e dizendo qual a variavel quer pegar. 
+
+                                Dia 2
+                      Curso Django: Templates e boas práticas.
+                      02.04 Git e Github
+
+    1-  No github criar um diretorio para o projeto.
+    2-  Criar um arquivo .gitignore  
+    3-  Ir no site (https://www.toptal.com/developers/gitignore/) e pegar do
+    django           
+    4-  No terminal "git init" para iniciar o diretorio do git e "git add ."
+    5-  No terminal ainda "git commit -m "primeiro commit" " 
+    6-  No github, pelar a linha git remote add origin e colar no terminal
+        desse projeto git remote add origin  https://github.com/AndersonBem/alura_space_agosto.git
+    7-  Terminal git push origin master
+
+                              Dia 4
+                      Curso Django: Templates e boas práticas.
+                      03.02 : App e projeto     
+
+    1-  Até agora criei a base do do projeto, agora vamos criar as partes que são
+    as funcionalidades. 
+        O nome dessas partes é app. 
+    2-  Um projeto pode ter varios app's dentro dele. O startproject é para iniciar
+    o projeto inteiro.
+    3-  Começar criando o app de galeria, o objetivo é mandar tudo que tem relação
+    com fotos no projeto. 
+
+    4-  "python manage.py startapp galeria" Sempre que a gente alterar algo dentro
+    da pasta galeria, eu to mexendo no app, não no projeto. 
+
+    5-  Você precisa avisar ao projeto que esse app faz parte dele, precisa conectar
+    o boneco lego na plataforma, você até agora criou os dois, mas n juntou eles. 
+
+
+    6-  No setup.py ...
+    
+    !!!!!!!!!!!!(Que tem relação com o PROJETO
+    -manage.py serve para rodar varios comandos e o projeto em si.
+    -na pasta setup é onde está o projeto todo, a base.
+    -a pasta galeria é onde ta o primeiro app que criei, com nome de galeria. 
+    -O settings.py da pasta setup,fica a configuração do projeto como um todo, a base. 
+    ) !!!!!!!!!!
+
+      ... tem um dicionario com nome INSTALLED_APPS, lá eu preciso colocar os 
+    app's que eu criar. No é só colocar 'galeria', 
+
+
+                                  Dia 05
+                          Curso Django: Templates e boas práticas.
+                      03.03 : views e urls
+
+    1-  Eu quero colocar alguma exibição na pagina, para alterar isso, eu preciso
+    alterar algum app, não o programa em si, então vou no app que tenho que é o 
+    galeria. Nele vou em views.py, ele é reponsavel por definir que informações 
+    vão ser exibidas na tela para cada requisição. 
+
+    2-  Nele vou importar o from django.http import HttpResponse, a função dele
+    é responder as requisições que vem do http. 
+
+    3-  Vou criar a função de nome index, pq vai ser a pagina principal e nela 
+    vou instanciar o request, pq ela vai responder a uma requisição do http
+
+    4-  Vou usar o HttpResponse e colar um codigo html lá dentro, apenas para teste
+
+          def index(request):
+            return HttpResponse('<h1>Alura Space</h>')
+
+    5-  Isso é como um Path do Flask, vc definio a rota para a função index, mas 
+    vc precisa avisar ao django disso. Por isso você tem que ir em setup e de lá
+    usar o arquivo urls.py
+
+          1- app/views.py lá vc cria a função que deseja para criar uma route
+          2- setup/urls.py Ai vc avisa ao django que criou essa route e quando deve 
+          responder com ela. 
+    
+    6-  Em views.py vai ter o dicionario urlpatterns, que é onde vc tem que botar
+    as routes que vc criou, no caso vai ficar assim:
+          urlpatterns = [
+              path('admin/', admin.site.urls),
+              path('', index),
+          ]
+
+    7-  Mas para ter a função index disponivel, vc precisa importar ela:
+          from galeria.views import index
+
+                          Curso Django: Templates e boas práticas.
+                      03.04 : isolando as urls
+
+    1-  Se vc deixar todos as routes de todos os app que criar dentro dessa urls.py
+    do django, ele vai ficar gigantesco, então preciso criar um arquivo urls.py na
+    mão para cada app criado e assim separar de maneira mais organizada as routes de
+    cada aplicação
+    2-  Em galeria, criar arquivo urls.py nela vc vai por os importes que vai usar,
+    que são parecido com do urls.py de setup:
+          from django.urls import path
+          from galeria.views import index
+
+    3-  Depois como no outro, criei um dicionario para as routes deste app, no caso 
+    galeria. Então ficou assim:
+          urlpatterns = [
+              path('',index)
+          ]  
+
+    4-  No urls.py do setup, vc vai tirar aquele caminho e import de antes e colocar
+    o include, assim ele vai buscar tudo que tiver na app de galeria.urls
+
+          from django.contrib import admin
+          from django.urls import path, include
+
+
+          urlpatterns = [
+              path('admin/', admin.site.urls),
+              path('', include('galeria.urls')),
+          ]
+
+    5-  Então a nova sequencia de criação de uma route é :
+
+            1- app/views.py lá vc cria a função que deseja para criar uma route
+            2- app/urls.py Ai vc criar ou colocar no dicionarios urlpatterns a route
+            que vc quer como resposta, usando o path... path('', index)
+            3- No urls.py de setup, se não tiver o include desse app, vc precisa fazer
+            path('', include('galeria.urls')),
+
+    
+                          Curso Django: Templates e boas práticas.
+                      03.05 : Templates
+
+    1- Agora que sei como criar uma route, vou poder vincular um html a essa route
+    2- Você precisa dizer pro django onde ficam as paginas html, logo vc precisa ir 
+    no setup.setting. Em no dicionario de template, tem o dirs, que são os diretorios
+    que ficam os template.  
+    3- Crio a pasta templates na raiz do projeto e vou lá no dirs para avisar a ele
+    usando o os:
+        [os.path.join(BASE_DIR,'templates')]
+        o os é para entrar nos arquivos, path indica o caminho, join é a função que ta
+        buscando, o BASE_DIR é o diretorio base do projeto e 'templates' é pasta que to
+        direcionando. 
+
+    4-  Na pasta template vc cria o index.html
+    5-  Agora vc precisa ir na função do index, para avisar para ela renderizar isto
+    6-  Na views.py do APP, vc vai alterar para isto:
+          
+          from django.shortcuts import render
+
+
+          def index(request):
+              return render(request, 'index.html')
+
+        Vamos usar só o render, que vc começa pelo request sempre e depois o html que
+        quer. 
+
+
+
+                                    Dia 06
+                          Curso Django: Templates e boas práticas.
+                      04.03/04 : carregando o template/ arquivos estáticos
+    1-  Baixei os arquivos da aula. 
+    2-  Criei a pasta galeria dentro de templates, para organizar melhor o projeto.
+    Então em views.py de galeria, eu alterei o destino para galeria/index.html
+    3-  Abri o html de index que baixei e colei o codigo no index do projeto, ainda falta
+    o css. 
+    4-  em settings.py do setup (pq estou falando pro programa como um todo, não para
+    o app especifico) vou criar uma lista dizendo onde vai ficar os arquivos estaticos.
+    Irei fazer isso logo apos o STATIC_URL. Primeiro em setup, eu crio um diretorio
+    chamado static. Ai no setting.py, faço:
+            STATICFILES_DIRS=[
+                os.path.join(BASE_DIR, 'setup/static')
+            ] 
+        Isso ta dizendo pro os acessar o caminho diretorio base, procurar setup/static
+
+    5-  Agora é receita de bolo, logo abaixo do anterior:
+
+            STATIC_ROOT = os.path.join(BASE_DIR,'static')
+
+        Caminho absoluto para o python onde ele vai coletar os arquivos. é protocolo
+
+    6-  Copiar a pasta assets e styles que baixei para dentro da pasta setup/static       
+    7-  No terminal, usar o comando python manage.py collectstatic para o django organizar
+    tudo e criar um novo dir static na base.  
+    8-  No html, mando ele carregar os arquivos estaticos com {% load static %} logo no começo
+    do arquivo.  No html ainda, no href do style, vai ficar assim: href="{% static '/styles/style.css' %}"
+    Assim to avisando  qual o caminho do arquivo estatico que quero usar e o nome dele.
+        
+                                    Dia 08
+                        Curso Django: Templates e boas práticas.
+                      04.05/06 : carregando as imagens/Outras Paginas
+    1-  Quando eu copiei o static da aula, veio o styles com os css e os assetes 
+    que são as imagens, elas já estão referenciadas no html que eu copiei. Vou alterar
+    apenas como ta escrito no html, para ele conseguir acessar as imagens. Então se 
+    eu quiser colocar uma imagem no html, então preciso referenciar da seguinte forma:
+
+        1-  "{% static ' o caminho ' %}"
+            ex: <img src="{% static 'assets/ícones/1x/Home - ativo.png' %}">
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!IMPORTANTE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+    2-  Vamos ver como criar outras paginas no mesmo site, vai usar o mesmo app galeria
+    isso pode indicar que devo só usar um app e trocar o nome dele de index pra echos.
+        
+        1-  Crei o html da outra pasta dentro do templates/galeria com nome de imagem.html
+        Colei o codigo da aula lá.   
+        2-  Em views.py DO APP, vamos criar outra função para exibir essa pagina.
+
+            def imagem(request):
+                return render(request, 'galeria/imagem.html') 
+        3-  Agora preciso criar uma route para essa pagina. 
+        4-  Em urls.py DO APP. vc precisa add essa função do dicionario de routes 
+        do app. Primeiro importar a função que foi criada e fazer esta route:
+                    path('imagem/', imagem)    
+            Cuitado que é o nome seguido de / não o oposto
+        5-  Pronto, a route esta criada, agora vou carregar os estilos dentro desse html
+        e as imagens tbm.
+
+
+                        Curso Django: Templates e boas práticas.
+                      05.02 : URL name
+
+    1-  Os caminhos do html precisão ser dessa forma:
+        
+        1-  Você precisa ir no path, que está no dicionario de urls.py DO APP e 
+        nesse path, voce precisa dar um nome a ele. EX:
+                path('imagem/', imagem, name='imagem'),
+        2-  A referencia no html vai ficar assim :
+                href="{% url 'imagem' %}"
+        3-  Com CTRL+F posso pesquisar todos e substituir todos. 
+        4-  Preciso fazer isso em todos os caminhos, como o HOME para Voltar
+        5-  Da o name para o path do index
+        6- Nos html, trocar o caminho para o correto. href="{% url 'index' %}"
+                        
+                                    Dia 10
+                        Curso Django: Templates e boas práticas.
+                      05.03 : BASE e DRY
+
+    1-  Vamos tirar as repetições dos html
+
+        1-  Em templates/galeria vou criar base.html
+        2-  Lá Eu vou colocar tudo que for repetido do index e de imagem   
+        3-  Lá vou começar com {% load static %} fechar as tags que faltam(body e html)
+        e dentro do body vou colocar {% block content %} {% endblock %} isso ta jogando os
+        outros html no base.
+        4-  Nós outros html vou começar com:
+
+                {% extends 'galeria/base.html' %}
+                {% load static %}
+                {% block content %}
+        Onde to avisando de onde vem o arquivo, carregando os estaticos e dizendo onde fica
+        o arquivo base.
+        5-  No final dos htmls, colocar o {% endblock %}
+
+                      Curso Django: Templates e boas práticas.
+                      05.04 : Partials
+    1-  Vamos tirar as repetições dos html em relação de menu, botões e etc.
+
+        1-  Vou criar uma pasta dentro de templates/galeria de nome partials]
+        2-  Lá dentro criar o _footer.html
+        3-  Dentro, eu vou colar o footer que se repete e começar esse arquivo com
+        {% load static %}
+        4-  Como esse footer vai se repetir, eu posso ir no base.html
+        5-  No base, dentro do body, eu vou usar o include {% include 'galeria/partials/_footer.html' %}
+        6-  Fazer o mesmo para o menu e o cabeçalho, com nomes de 
+        _header.html para o cabeçalho
+        _sidebar.html para o menu lateral
+        _footer.html para o rodapé
+        7-  Lembrar que no header, precisa vir tudo do começo ou passar o começo pro base
+
+
+                                 Dia Perdi as contas.
+                    Curso Django: persistência de dados e Admin
+                      01.04: Nomes dinâmicos
+        1-  Em index.html apagar os cards extras e deixar apenas 1 e ativar o auto
+        save do vccode. 
+        2-  Em views.py do app, criar um dicionario com nome de dados e botar Os
+        dados das duas fotos da seguinte forma.
+
+                dados = {
+                    1: {"nome" : "Nebulosa de Carina", 
+                        "legenda" : "webbtelescope.org / NASA / James Webb"},
+                    2: {"nome" : "Galáxia NGC 1079", 
+                        "legenda" : "nasa.org / NASA / Hubble"}
+                } 
+        
+        3-  O return render permite que vc envie informações igual ao flask.
+            1-  
+
+                    def index(request):
+                        dados = {
+                        1: {"nome" : "Nebulosa de Carina", 
+                            "legenda" : "webbtelescope.org / NASA / James Webb"},
+                        2: {"nome" : "Galáxia NGC 1079", 
+                            "legenda" : "nasa.org / NASA / Hubble"}
+                        }
+                        return render(request, 'galeria/index.html', {"cards": dados}) 
+            
+            2-  Para receber os dados no index nos cards do index.html
+                1-   Criar estrutura de repetição para cards.
+                    Antes de <li class="card"> que é a estrutura que vamos repetir, colocar
+                        {% for foto_id, info in cards.items %}
+                        lembre de fechar com endfor
+                    E no local de nome e legenda colocar respectivamente:
+                        {{ info.nome }}  {{ info.legenda }}
+        
+        4-                  Explicação
+            1-  Primeiro criei um dicionario com os dados que queria usar, tudo isso vai ser alterado
+        por um banco de dados, no return render eu coloquei outro dicionario com o item "cards"(apenas um nome)
+        e nesse cards eu associei o dicionario criado antes com nome de dados. Então joguei o dic dentro 
+        da variavel(ou dic?) cards. 
+            2-  No html, eu criei o laço de repetição que usar o foto_id pq usa o id do dic dados
+            Ou seja, o laço vê o item 1, 2, 3 e etc, depois ele entra nas infos daquele item. Poderia ser X que 
+        dava no mesmo. 
+            3-  Nos locais que vc quer os dados no html, é só por info.dados usando os nomes colocados
+        no dic dados.  
+
+                        Dia Perdi as contas(Dia 2 do novo curso).
+                    Curso Django: persistência de dados e Admin
+                        01.05: Banco de dados
+
+        1-  Em galeria/models.py vc cria as classes que o django vai usar para criar as
+        tabelas do banco de dados.
+            1-  Em models.py = 
+
+                    class Fotografia(models.Model):
+                        nome = models.CharField(max_length=100, null=False, blank=False)
+                        legenda = models.CharField(max_length=150, null=False, blank=False)
+                        descricao = models.TextField(null=False, blank=False)
+                        foto = models.CharField(max_length=100, null=False, blank=False)
+
+                        def __str__(self):
+                            return f"Fotografia [nome={self.nome}]" 
+                
+                Cada atributo da classe é uma coluna da tabela. CharField é para textos
+            pequenos, como nomes e legendas. TextField é para textos grandes.
+                Null é para dados em branco e blank é para " ". A def no final é uma boa pratica
+            para quando vc solicitar o nome do item, ele te devolver uma string, não o local 
+            da memória.
+            
+        2-  No terminal =
+                1-  Deixar um terminal rodando o server
+                2-  Num segundo terminal=
+                        
+                        python manage.py makemigrations
+                    Esse comando vai fazer o python pegar a classe que foi feita
+                e transformar numa tabela de verdade. Jogando ela dentro do dir
+                galeria/migrations.
+
+                3-  No segundo terminal= 
+
+                        python manage.py migrate   
+
+                    Agora ele cria o banco de dados de verdade.
+                
+        3-  Nas extensões instalar o sqlite viewer e isso vai criar um arquivo db.sqlite3
+        na pasta raiz.
+
+                         Dia Perdi as contas(Dia 3 do novo curso).
+                    Curso Django: persistência de dados e Admin
+                        01.07: Criando dados
+        
+        1-  Criando um novo item pelo terminal  
+            1-  python manage.py shell no terminal 
+            2-  from galeria.models import Fotografia
+            3-  foto = Fotografia(nome="Nebulosa de Carina", legenda = "webbtelescope.org / NASA / James Webb", foto= "carina-nebula.png")
+            4-  foto.save()
+        2-  O arquivo apps.py de galeria são as configurações da galeria. Em settings.py
+        de setup, eu vou em INSTALLED_APPS e alterar o galeria para ficar mais completo
+        respeitando essas configurações = 'galeria.apps.GaleriaConfig',
+
+                        Dia Perdi as contas(Dia 4 do novo curso).
+                    Curso Django: persistência de dados e Admin
+                        02.02: Acessando o banco de dados
+
+        1-  Para acessar o banco, vc vai precisar apagar o dic criado em views.py de
+        galeria.
+            1-  Em galeria/views.py:
+                    from galeria.models import Fotografia
+            2-  Dentro da função index:
+                    fotografias = Fotografia.objects.all()
+                    Isso colocou todos os objetos do models Fotografia dentro da var 
+                fotografias 
+            3-  No dic cards dentro do return, referenciar agora fotografias.
+
+            4-  No index, trocar a estrutura de repetição para: 
+                    {% if cards %}
+                    {% for fotografia in cards %}
+                    ...
+                    {% endfor %}
+                    {% else %}
+                    {% endif %}
+            5-  E as referencias agora vão ser fotografia.nome e etc
+                No nome src, apagar o nome do arquivo e no final colocar {{ fotografia.foto }}
+                vai ficar = 
+                src="{% static 'assets/imagens/galeria/'%}{{ fotografia.foto }}"
+            
+                        Dia Perdi as contas(Dia 6 do novo curso).
+                    Curso Django: persistência de dados e Admin
+                        02.03: Passando uma referencia 
+        
+        1-  Primeiro preciso criar mais um item
+            1-  No terminal =  python manage.py shell para abrir o shell de comando
+            2-  from galeria.models import Fotografia
+            3-  Dentro de setup/staticassets/imagens/galeria colocar a imagem
+            4-  O static dentro de setup, faz referenecia a desenvolvimento e o de fora ao em
+            produção.
+            5-  No terminal eu salvei a fotografia e etc.
+        
+        2-  Quando eu clico na imagem, vai sempre pra mesma pagina, agora eu vou fazer a pagina
+        index passar para imagem a informação do que eu quero.
+            1-  em index, no href que ta indicando imagem = 
+                    <a href="{% url 'imagem' fotografia.id %}">
+            2-  Isso manda o valor do ir pro urls.py de galeria. Acredito
+            que isso ta acontecendo pq é ai que esta a route e é isso que
+            fez. Lá, eu mudo o path para:
+                     path('imagem/<int: foto_id>', imagem, name='imagem'),
+            3-  Esse path agora ta enviando pra função imagem, que precisa ser alterada
+            para :
+                    def imagem(request, foto_id):
+                        fotografia = get_object_or_404(Fotografia, pk=foto_id)
+                        return render(request, 'galeria/imagem.html', {"fotografia": fotografia})  
+                Lembrar do import          
+            4-  No imagem.html, mudar o src tbm para :
+                    src="{% static 'assets/imagens/galeria/'%}{{ fotografia.foto }}">
+            5-  E tbm mudar as descrições da imagem.
+
+            !!!!!! tudo isso até agora,pode ser aplicado as listas do meu projeto, para ter
+            um html só, não aquela lista gigante.!!!!!
+
+
+                            Dia Perdi as contas(Dia 7 do novo curso).
+                    Curso Django: persistência de dados e Admin
+                        02.04: Djnago Admin
+        1-  preciso criar o user do admin.
+            1-  No terminal = python manage.py createsuperuser
+            2-  
+
+                    Curso Django: persistência de dados e Admin
+                        02.06: CRUD do Admim
+        1-  No admin.py do app.
+            1-  from django.contrib import admin
+                from galeria.models import Fotografia
+
+                # Register your models here.
+
+                admin.site.register(Fotografia)
+            2-  Isso vc registrou o model que vc quer q apareça no admin
+            3-  Vou criar uma class que contenha o list_display para orga-
+            nizar o admin e nela posso colocar o que quero mostrar. Preciso
+            referenciar essa classe no admin.site,register.
+                Vai ficar assim no admin.
+                    from django.contrib import admin
+                    from galeria.models import Fotografia
+
+                    class ListandoFotografias(admin.ModelAdmin):
+                        list_display = ("id", "nome", "legenda", "publicada")
+                        list_display_links = ("id", "nome")
+                        search_fields = ("nome",)
+                        list_filter = ("categoria",)
+                        list_editable = ("publicada",)
+                        list_per_page = 10
+
+                    # Register your models here.
+
+
+                    admin.site.register(Fotografia, ListandoFotografias)
+
+            4-  O list_display_links torna as coisas links para editar O
+            objeto.  
+            5-  search_fields = ("nome",) lembrar que precisa ser uma tupla
+
+                     Curso Django: persistência de dados e Admin
+                        02.07: Incluindo categoria
+
+        1-  Quero add uma categoria para selecionar por ela. Isso mostra como
+        add algo na classe e usar para separar, pode ser usado para
+        felino/canino e etc e isso pode definir categorias certas para aquilo.
+            1-  Em models.py do app 
+                1-  Fazer uma lista de Tuplas(precisa ser tupla pelo django)
+                com as categorias que quero:
+                        OPCOES_CATEGORIA = [
+                            ("NEBULOSA","Nebulosa"),
+                            ("ESTRELA","Estrela"),
+                            ("GALÁXIA","Galáxia"),
+                            ("PLANETA","Planeta")
+                        ]
+                2-  add Categoria na classe:
+                        categoria = models.CharField(max_length=100,choices=OPCOES_CATEGORIA, defualt="")
+                3-  Sempre que alterar o models, fazer migrate  
+                    1-  python manage.py makemigrations
+                    2-  python manage.py migrate  
+                     
+                    Curso Django: persistência de dados e Admin
+                        03.02 : Personalizando o admin
+        
+        1-  Filtro por categoria 
+            1-  Em admin.py do app, add na class list_filter = ("categoria",)
+        2-  Paginação
+            1-  list_per_page = 10
+
+
+                    Curso Django: persistência de dados e Admin
+                        03.03 : Funcionalidade de publicação
+        1-  Vou criar uma funcionalidade onde posso add um objeto novo, mas n publicar ele
+            1-  Em models.py do app 
+                1- Dentro do class de Fotografia :
+                    publicada = models.BooleanField(default=False)  
+                2-  Migrate
+                3-  !!!!!!!!!!!!Esse models.BooleanField serve pra vc ticar ou não, pode
+                servir pra castrado ou não 
+            2-  Preciso fazer uma logica para filtrar
+                1-  Em views.pt do app. 
+                    1-  alterar a variavel fotografias para :
+                        fotografias = Fotografia.objects.filter(publicada=True)
+            3-  Em admin.py 
+                1-  No list_display add "publicada"
+                2-  Add list_editable = ("publicada",)
+
+                    Curso Django: persistência de dados e Admin
+                        03.04: Incrementando o index
+        1-  Add data de atualização da postagem
+            1-  Em models.py do app, na class
+                1- from datetime import datetime
+                2- data_fotogragia = models.DateTimeField(default=datetime.now, blank=False)
+                3- migrate 
+        2-  Add ordenação da pagina
+            1-  Em views.py do app
+                1-  fotografias = Fotografia.objects.order_by("data_fotogragia").filter(publicada=True)
+                2-  Se eu colocar "-data_fotogragia" fica ao contrario
+
+
+                    Curso Django: persistência de dados e Admin
+                        04.02 : Novo caminho para as fotos
+        1-  Vamos arrumar um jeito de fazer upload para fotos.
+            1-  Mudar o campo no model para funcionar no admin.
+                1-  Em settings.py de setup
+                    1-  Logo abaixo de static_root
+                        
+                        # Media
+
+                        MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
+                        MEDIA_URL = "/media/"
+
+                        Isso vai dizer para ele procurar no base pelo dir
+                        media                   
+                2-  Em urls.py DO SETUP logo apos o urlpatterns
+
+                        + static(setting.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+                        Isso ta informando que no settings ele deve buscar o media url e o 
+                    media root como static
+
+                    from django.conf import settings
+                    from django.conf.urls.static import static
+                3-  Em models.py    
+                    1-  mudar o foto para:
+                        foto = models.ImageField(upload_to="fotos/%Y/%m/%d", blank=True)
+
+                        O fotos/%Y/%m/%d significa que ele vai para o dir foto e vai criar
+                        os dir seguintes de ano/mes/Dia
+
+                    2-  migrate (precisou instalar o pillow e fazer o freeze)
+                
+                    Curso Django: persistência de dados e Admin
+                        04.03 : Imagem "not found"
+
+        1-  Em setup/staticassets/imagens/galeria colar a imagem de not found
+        2-  No index.html antes dos cards, colocar. 
+                {% for fotografia in cards %}
+                <li class="card">
+                    <a href="{% url 'imagem' fotografia.id %}">
+                    {% if fotografia.foto == "" or fotografia.foto == null %}
+                        <img class="card__imagem" src="{% static 'assets/imagens/galeria/not-found.png'%}" alt="foto">
+                    {% else %}
+                        <img class="card__imagem" src="{{ fotografia.foto.url }}" alt="foto">
+                    {% endif %}
+
+                o if primeiro é para imagem not found e o segundo é o jeito que se usa para
+            ele achar 
+                o fotografia in cards é x in cards e cards contem todos os objetos deste banco
+            de dados. então o x.foto ele ta indo na coluna foto do objeto.  e o x.foto.url Duvida no forum
+        
+
+                    Curso Django: persistência de dados e Admin
+                        04.04: Alterando template imagem
+        1-  Em imagem.html fazer a mesma coisa de antes, vai ficar :
+                {% if fotografia.foto == "" or fotografia.foto == null %}
+                    <img class="imagem__imagem" src="{% static 'assets/imagens/galeria/not-found.png'%}">
+                {% else %}
+                    <img class="imagem__imagem" src="{{ fotografia.foto.url }}">
+                {% endif %}
+        2-  Em models, mudar para :
+                def __str__(self):
+                    return self.nome
+
+
+                    Curso Django: persistência de dados e Admin
+                        05.02 : Funcionalidade de busca
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+            PARA APLICAR ISSO NO SISTEMA, VOU PRECISAR COLOCAR UM BOTÃO
+        DE BUSCA NOS htmls QUE EU ACHAR necessário, POSSO TENTAR USAR O DA aula
+        MAS LEMBRAR QUE N VOU TER AS imagens
+
+            Pergunta do chatgepeto
+            DA pra usar o font awesome
+            vc precisa referenciar ele no html base:
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+            Depois usar o icone no local da imagem de buscar
+                <i class="fas fa-search-location"></i>   
+                como este exemplo
+
+            https://fontawesome.com/
+            https://fontawesome.com/search?q=busca&o=r
+            https://fontawesome.com/kits/92670e171c/setup
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        1-  Funcionalidade de Busca no Index (html)
+            1-  Criar uma nova url  
+                1-  URLs.py do app :
+                    path("buscar", buscar, name="buscar"),  primeiro foi o caminho, segundo foi o nome do html e O
+                terceiro foi o name do path
+                2-  Em views.py do app:
+                    def buscar(request):
+                        return render (request, "galeria/buscar.html" )
+                    Essa é a função que vai render a pagina html que vai ser criada,
+                depois disso vc precisa importar a função buscar no urls.py do app
+
+                3-  Criar o html em template do app, dentro de galeria
+            2-  Dentro do _header.html, onde fica o menu de busca:
+                1-  Depois da div busca__fundo, criar: 
+                    <form action="{% url 'buscar' %}">
+                    Colocar o que vem depois, dentro, ou seja isto:
+                    <input class="busca__input" type="text" placeholder="O que você procura?">
+                    <img class="busca__icone" src="{% static 'assets/ícones/1x/search.png' %}" alt="ícone de search">
+                2-  No final, vai ficar:
+                        <form action="{% url 'buscar' %}">
+                            <input class="busca__input" type="text" name="buscar" placeholder="O que você procura?">
+                            <button type="submit">
+                                <img class="busca__icone" src="{% static 'assets/ícones/1x/search.png' %}" alt="ícone de search">    
+                            </button>
+                        </form>
+
+                    Curso Django: persistência de dados e Admin
+                        05.03 : View de buscar     
+        1-  Alterar o html de buscar para o correto:
+            1-  Copiei o index dentro do buscar
+            2-  Em views.py do app:
+                A referencia da busca esta sendo passada na url da pagina
+                1-  Primeiro vamos puxar todos os objetos do banco de dados:
+                        fotografias = Fotografia.objects.order_by("-data_fotogragia").filter(publicada=True)
+                2-  Agora filtrar pela busca da url:
+                         if "buscar" in request.GET:
+                            nome_a_buscar = request.GET['buscar'] 
+
+                        request.get é a url da pagina, o request.GET['buscar'] faz referencia ao
+                    name do imput do index.html
+                3-  Agora se tiver um nome_a_buscar, ele vai mudar a variavel fotografia para:
+                        if "buscar" in request.GET:
+                            nome_a_buscar = request.GET['buscar']
+                            if nome_a_buscar:
+                                fotografias = fotografias.filter(nome__icontains=nome_a_buscar)
+                        O nome__icontains vai verificar se tem algo com nome_a_buscar no BD 
+                4-  Agora precisa passar a informação para o render de buscar.html  
+                        return render (request, "galeria/buscar.html", {"cards": fotografias})        
+                    
+                    Curso Django: persistência de dados e Admin
+                        05.04 : autenticação e autorização
+        1-  Fazer aparecer a descrição das imagens  
+            1-  Imagem.html:
+                1- add o fotografia.descricao no local
+        2-  Vi sobre admin, pessoas e grupos do admin
+
+
+
+
+                     Curso Django: autenticação de formulários e alerta
+                        01.04 : Criando nova app
+        1-  Criar um novo app para criar usuarios para edição pelo site, não admin
+            1-  python manage.py startapp usuarios  
+            2-  em settings.py, add no INSTALLED_APPS : 'usuarios.apps.UsuariosConfig'
+            3-  Na pasta do usuarios, criar urls.py
+            4-  Copiar o urls.py de galeria e colar no novo, sem path dentros.
+            5-  No urls.py de setup, eu tenho que incluir este novo com o:
+                    path('', include('usuarios.urls')),
+                 
+                
+                    Curso Django: autenticação de formulários e alerta
+                        01.05: URLs e views
+        1-  Em urls.py de usuarios.
+            1-  
+            from usuarios.views import login, cadastro 
+                urlpatterns = [
+                    path('login/', login, name='login'),
+                    path('cadastro/', cadastro, name='cadastro'),
+                    
+                ]  
+        2-  Em views.py
+            1-  def login(request):
+                    return render(request, "usuarios/login.html")
+
+                def cadastro(request):
+                    return render(request, "usuarios/cadastro.html")  
+
+        3-  Dentro de templates
+            1- Criar um dir de usuarios
+            2- Nesse dir, criar o login.html e o cadastro.html
+
+                    Curso Django: autenticação de formulários e alerta
+                        01.06: Templates    
+
+        1-  No index, no menu lateral
+            1-  Trocar o "mais vistas" Por "Login" e a href href="{% url 'login' %}"
+            2-  Trocar o "mais vistas" Por "Cadastro" e a href href="{% url 'cadastro' %}"  
+        2-  No html de login, eu coloquei o codigo da aula. Ele repete o codigo quase que inteiro E
+        em baixo tem uma section com o form em baixo, esse é a parte importante.
+        3-  Em cadastro é a mesma coisa
+        4-  Em views.py:
+            1-  Mudar os def para capturar as informações dos htmls
+                1-   
+
+                    Curso Django: autenticação de formulários e alerta
+                        02.02: Criando formulários
+        1-  Esta foi a forma padrão, agora vamos usar a forma Django --'
+            1-  Criar forms.py no app usuarios
+                1-  Nele:
+                        from django import forms
+
+                        class LoginForms(forms.Form):
+                            nome_login = forms.CharField(
+                                label="Nome de Login",
+                                required=True,
+                                max_length=100
+                            )
+                            senha = forms.CharField(
+                                label="Senha de Login",
+                                required=True,
+                                max_length=70,
+                                widget= forms.PasswordInput()
+                            )
+
+                    Label é o titulo, Required é isso, widget é da caracteristicas
+
+            2-  Em views.py de usuarios:
+                1-  from usuarios.forms import LoginForms
+                2-  def login(request):
+                        form = LoginForms()
+                        return render(request, "usuarios/login.html", {"form": form})
+                Se quer jogar algo pro render, vc cria um dicionario, coloca um nome e bota o value
+                o que vc quer jogar, no caso a variavel feita antes com a estanciacão do objeto
+
+            3-  Em login.html:
+                1-  apagar a div class que conteu os label's e o button
+                2-  <form action="" method="">
+                        {% csrf_token %}
+                        <div class="row">
+                        {% for field in form.visible_fields %}
+                        <div>
+                            <label for="{{ field.id_for_label }}" style="color:#D9D9D9; margin-bottom: 5px;">{{field.label}}</label>
+                            {{ field }}
+                        </div>
+                        {% endfor %} 
+                        </div>
+                    </form>       
+
+                    Curso Django: autenticação de formulários e alerta
+                        02.03: Estilizando formulários
+
+            1-  Todas as classes usadas abaixo são do bootstrap:
+                    {% csrf_token %}
+                    <div class="row">
+                       {% for field in form.visible_fields %}
+                       <div class="col-12 col-lg-12" style="margin-bottom: 10px;">
+                        <label for="{{ field.id_for_label }}" style="color:#D9D9D9; margin-bottom: 5px;">{{field.label}}</label>
+                        {{ field }}
+                       </div>
+                       {% endfor %} 
+                    </div>
+                    <div >
+                       <button type="submit" class="btn btn-success col-12" style="padding: top 5px;">Logar</button> 
+                    </div>  
+
+            2-  Em forms.py:
+                    1-  from django import forms
+
+                        class LoginForms(forms.Form):
+                            nome_login = forms.CharField(
+                                label="Nome de Login",
+                                required=True,
+                                max_length=100,
+                                widget= forms.TextInput(
+                                    attrs= {
+                                        "class": "form-control",
+                                        "placeholder": "Ex: AndersonBem "
+                                    }
+                                )
+                            )
+                            senha = forms.CharField(
+                                label="Senha",
+                                required=True,
+                                max_length=70,
+                                widget= forms.PasswordInput(
+                                    attrs= {
+                                        "class": "form-control",
+                                        "placeholder": "Digite sua senha "
+                                    }
+                                )
+                            )  
+
+                    Curso Django: autenticação de formulários e alerta
+                        02.04: Formulários de cadastro
+
+            1-  Em forms.py
+                class CadastroForms(forms.Form):
+                    nome_cadastro = forms.CharField(
+                        label="Nome de Cadastro",
+                        required=True,
+                        max_length=100,
+                        widget= forms.TextInput(
+                            attrs= {
+                                "class": "form-control",
+                                "placeholder": "Ex: AndersonBem "
+                            }
+                        )
+                    )
+                    email = forms.EmailField(
+                    label="E-mail",
+                        required=True,
+                        max_length=100,
+                        widget= forms.EmailInput(
+                            attrs= {
+                                "class": "form-control",
+                                "placeholder": "Ex: anderson.bem@exemplo.com "
+                            }
+                        ) 
+                    )
+                    senha1 = forms.CharField(
+                        label="Senha",
+                        required=True,
+                        max_length=70,
+                        widget= forms.PasswordInput(
+                            attrs= {
+                                "class": "form-control",
+                                "placeholder": "Digite sua senha "
+                            }
+                        )
+                    )
+                    senha_2 = forms.CharField(
+                        label="Senha",
+                        required=True,
+                        max_length=70,
+                        widget= forms.PasswordInput(
+                            attrs= {
+                                "class": "form-control",
+                                "placeholder": "Repita sua senha"
+                            }
+                        )
+                    )               
+            2-  Em views importar e por no render
+                1-   def cadastro(request):
+                        form = CadastroForms()
+                        return render(request, "usuarios/cadastro.html", {"form": form}) 
+            
+            3-  Copiar as alterações do html login para o de cadastro 
+
+                Curso Django: autenticação de formulários e alerta
+                        03.02 : Usuários do Django
+
+            1-  Django já tem uma tabela imbutida de usuarios, não precisa fazer uma planilha
+            no BD.
+                1-  Arrumar as informações na URL.
+                    1- Em login.html:
+                        1-  Alterar <form action="" method=""> para:
+                            <form action="{% url 'login' %}" method="POST">
+                        2-  Fazer o mesmo em cadastro.html
+                2-  Fazer a logica:
+                    1-  Em views.py de usuarios:
+                        1-  Em def cadastro:
+                             def cadastro(request):
+                                form = CadastroForms()
+
+                                if request.method == 'POST':
+                                    form = CadastroForms(request.POST)
+
+                                    if form["senha_1"].value()!= form["senha_2"].value():
+                                        return redirect('cadastro')   
+
+                                  form["senha_1"].value() com isso eu acesso o value do senha_1 
+                                do formulário
+                
+                Curso Django: autenticação de formulários e alerta
+                        03.03 : Lógica de cadastro
+            
+            2-  Em views.py do usuario:
+
+                from django.contrib.auth.models import User
+
+                def cadastro(request):
+                    form = CadastroForms()
+
+                    if request.method == 'POST':
+                        form = CadastroForms(request.POST)
+
+                        if form.is_valid():
+                            if form["senha_1"].value() != form["senha_2"].value():
+                                return redirect ('cadastro')
+
+                            nome=form['nome_cadastro'].value()
+                            email=form['email'].value()
+                            senha=form['senha_1'].value()
+
+                            if User.objects.filter(username=nome).exists():
+                                return redirect('cadastro')
+
+                            usuario = User.objects.create_user(
+                                username=nome,
+                                email=email,
+                                password=senha
+                            )
+                            usuario.save()
+                            return redirect('login')
+                        
+                    return render(request, "usuarios/cadastro.html", {"form": form})
+
+                Curso Django: autenticação de formulários e alerta
+                        03.04 : Lógica de login
+
+             1-  from django.contrib import auth
+
+                # Create your views here.
+
+                def login(request):
+                    form = LoginForms()
+
+                    if request.method == 'POST':
+                        form = LoginForms(request.POST)
+
+                        if form.is_valid():
+                            nome = form['nome_login'].value()
+                            senha = form['senha'].value()
+
+                            usuario = auth.authenticate(
+                                request,
+                                username = nome,
+                                password = senha
+                            )
+
+                            if usuario is not None:
+                                auth.login(request, usuario)
+                                return redirect('index')
+                            else:
+                                return redirect('login')
+
+                    return render(request, "usuarios/login.html", {"form": form})
+                
+                Curso Django: autenticação de formulários e alerta
+                        03.05 : Alertas e mensagens.
+
+            1-  from django.contrib import messages
+
+                # Create your views here.
+
+                def login(request):
+                    form = LoginForms()
+
+                    if request.method == 'POST':
+                        form = LoginForms(request.POST)
+
+                        if form.is_valid():
+                            nome = form['nome_login'].value()
+                            senha = form['senha'].value()
+
+                            usuario = auth.authenticate(
+                                request,
+                                username = nome,
+                                password = senha
+                            )
+
+                            if usuario is not None:
+                                auth.login(request, usuario)
+                                messages.success(request, f'{nome} logado com sucesso')
+                                return redirect('index')
+                            else:
+                                messages.error(request, "Erro ao efeturar login")
+                                return redirect('login')
+
+                    return render(request, "usuarios/login.html", {"form": form})
+
+                def cadastro(request):
+                    form = CadastroForms()
+
+                    if request.method == 'POST':
+                        form = CadastroForms(request.POST)
+
+                        if form.is_valid():
+                            if form["senha_1"].value() != form["senha_2"].value():
+                                messages.error(request, "Senhas não são iguais")
+                                return redirect ('cadastro')
+
+                            nome=form['nome_cadastro'].value()
+                            email=form['email'].value()
+                            senha=form['senha_1'].value()
+
+                            if User.objects.filter(username=nome).exists():
+                                messages.error(request, "Usuário já existente")
+                                return redirect('cadastro')
+
+                            usuario = User.objects.create_user(
+                                username=nome,
+                                email=email,
+                                password=senha
+                            )
+                            usuario.save()
+                            messages.success(request, "Cadastro efetuado com sucesso")
+                            return redirect('login')
+                        
+                    return render(request, "usuarios/cadastro.html", {"form": form})
+
+
+            2-  Em login.html:
+                1-  {% for message in messages %}
+                    <div class="alert alert-primary">
+                            <p id='messages'>{{message}}</p>
+                    </div>
+                    {% endfor %}
+
+                    Onde achar melhor, no cado foi logo abaixo de img de cabeçalho
+                2-  Fiz o mesmo em cadastro.html e na partial _header.html
+
+                 Curso Django: autenticação de formulários e alerta
+                        03.06 : Logout
+
+            1-  Em views.py de usuario:
+                1-  def logout(request):
+                        auth.logout(request)
+                        messages.success(request, "Logout efetuado com sucesso")
+                        return redirect('login')    
+            2-  Em urls.py de usuarios:
+                    path('logout', logout, name='logout'),
+
+            3-  Nós html, troqueo o surpreenda por 
+                    <a href="{% url 'logout' %}"><img src="{% static 'assets/ícones/1x/Surpreenda-me - inativo.png' %}"> Logout</a>
+                    Isso foi para evitar criar outro botão
+
+
+                        Curso Django: autenticação de formulários e alerta
+                        04.02 : refatoração e validação
+
+            1-  Agora vou por a logica para verificar se ta logando nas funções que render
+            as paginas. 
+                1-  Em views.py de galeria, add em index e buscar:
+                        if not request.user.is_authenticated:
+                            messages.error(request, "Usuário não logado")
+                            return redirect('login')     
+                        
+                        importar o redirect e o messages (shortcusts e contrib)
+
+                        Curso Django: autenticação de formulários e alerta
+                        04.02 : refatoração e validação
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!! Curso Django: autenticação de formulários e alerta
+                        04.03 : Associando tabelas
+
+            1-  Para associar tabelas, basta add uma caracteristica em uma delas,
+            nesse caso, vamos associar fotografia com usuarios(tbm é uma tabela apesar de não ter
+            model)
+                1-  Na class Fotografa(em models.py de galeria)
+
+                    from django.contrib.auth.models import User (essa parte está importando a tabela de user)
+
+                        usuario = models.ForeignKey(
+                            to=User,
+                            on_delete=models.SET_NULL,
+                            null=True,
+                            blank=False,
+                            related_name="user",
+                        )
+
+                2-  Depois é só fazer o migrate
+
+                        Curso Django: autenticação de formulários e alerta
+                        04.04 : Validação clean
+
+            1-  Isso vai corrigir os nomes e determinar como pode ser feito:
+                1-  forms.py de usuario
+                    1-  Logo no final de class CadastroForms
+
+                        def clean_nome_cadastro(self):
+                            nome = self.cleaned_data.get("nome_cadastro")
+
+                            if nome:
+                                nome = nome.strip()
+                                if " " in nome:
+                                    raise forms.ValidationError("Não é possível inserir espaços dentro do nome de cadastro")
+                                else:
+                                    return nome  
+
+
+                        Curso Django: autenticação de formulários e alerta
+                        04.05 : Mensagens de erro
+            1-  Abaixo dp anterior:
+                    def clean_senha_2(self):
+                        senha_1 = self.cleaned_data.get("senha_1")
+                        senha_2 = self.cleaned_data.get("senha_2")
+
+                        if senha_1 and senha_2:
+                            if senha_1 != senha_2:
+                                raise forms.ValidationError("Senhas não são iguais")
+                            else:
+                                return senha_2 
+
+                Como eu fiz isso, em def cadastro, eu apaguei a validação que vinha após (if form.is_valid())
+
+            2-  No html que tem esse forms, no caso cadastro.html
+                1-  Dentro do for filds desse campo, logo no final e antes do endfor:
+                        {% for error in field.errors %}
+                        <div class="alert alert-danger">
+                            {{error}}
+                        </div>
+                        {% endfor %}  
+
+
+                        Curso Django: autenticação de formulários e alerta
+                        05.02 : Partial para Alertas
+
+            1-  Dentro de partial, criei _alertas.html  
+                1- Copiado do html de login:
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-primary">
+                                {{message}}
+                            </div>        
+                        {% endfor %}
+                    {% endif %}  
+            2-  Substituir dos originais para {% include 'galeria/partials/_alertas.html' %}
+
+            3-  Em settins.py de setup, no final:
+                    # messages
+
+                    from django.contrib.messages import constants as messages
+                    MESSAGE_TAGS = {
+                        messages.ERROR: 'danger',
+                        messages.SUCCESS: 'success',
+                    }     
+            
+            4-  O _alertas vai ficar:
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-{{ message.tags }}">
+                                    {{message}}
+                                </div>        
+                            {% endfor %}
+                        {% endif %}    
+
+                        Curso Django: autenticação de formulários e alerta
+                        05.03 : Reorganizando diretórios
+
+            1-  Movi a pasta de partials para fora de galeria.
+            2-  Precisei ir em todos os html e mudar os galerias/partials para partials
+
+            
+
+                            Curso Django: CRUD e persistência no S3
+                        01.04 : Reorganizando diretórios
+            1-  Na pasta raiz, criar o dir app e arrastar galeria e Usuários para lá
+            2-  Corrigir todas as referencias 
+                1-  Em settings nos INSTALLED_APPSm, na frente do nome add apps.
+                2-  Em apps.py de galeria, renomer o name para o apps
+                3-  Em admin.py de galeria, tem um galeria que precisa mudar no from
+                4-  Em urls.py mesma coisa que o anterior
+                5-  Em views.py a mesma coisa
+
+                1-  Em usuarios, fazer todos os intens anterior
+
+                1-  Em urls.py de setup, corrigir os path
+
+                        Curso Django: CRUD e persistência no S3
+                        01.06 : Refatorando a estilização
+
+            1-  Criar dir dentro de tempates shared
+            2-  Joguei o base.html para o shared
+            3-  Trocar as referencias:
+                1 - index, imagem e buscar.html
+            4-  Particionar melhor o login e o Cadastro
+
+                        Curso Django: CRUD e persistência no S3
+                        02.02 : URLs e views
+            
+            1-  Criar button para add imagem(objeto).
+                1-  Em _sidebar, copiar uma das opções e colocar nova imagem
+            2-  Em urls.py em galeria
+                1- Criar os Path
+                    1- path('nova-imagem', nova_imagem, name='nova_imagem'),
+                        path('editar-imagem', editar_imagem, name='editar_imagem'),
+                        path('deletar-imagem', deletar_imagem, name='deletar_imagem'),  
+
+            3-  Em views.py de galeria, criar as funções
+                1-  def nova_imagem(request):
+                        return render(request, 'galeria/nova_imagem.html')
+
+                    def editar_imagem(request):
+                        pass
+
+                    def deletar_imagem(request):
+                        pass  
+
+            4-  Voltar em urls.py e fazer os importes
+
+                        Curso Django: CRUD e persistência no S3
+                        02.03 : Formulário de galeria
+
+            1-  O codigo do login.htm colar no nova_imagem.html
+            2-  Criar o forms.py em galeria.
+                1-  from django import forms
+
+                    from apps.galeria.models import Fotografia
+
+                    class FotografiaForms(forms.ModelForm):
+                        class Meta:
+                            model = Fotografia
+                            exclude = ['publicada',]
+
+                            widgets = {
+                                'nome' : forms.TextInput(attrs={'class': 'form-control'}),
+                                'legenda' : forms.TextInput(attrs={'class': 'form-control'}),
+                                'categoria' : forms.Select(attrs={'class': 'form-control'}),
+                                'descricao' : forms.Textarea(attrs={'class': 'form-control'}, initial='Seu texto pré-pronto aqui'),
+                                'foto' : forms.FileInput(attrs={'class': 'form-control'}),
+                                'data_fotografia' : forms.DateInput(
+                                    format= '%d/%m/%Y',
+                                    attrs={
+                                        'type':'date',
+                                        'class': 'form-control'
+                                    }
+                                ),
+                                'categoria' : forms.Select(attrs={'class': 'form-control'}),
+
+                            }
+
+                 !!!!!!https://chat.openai.com/c/0322ad4f-56e9-4a7f-8b2e-f6146fc63959!!!!!
+
+
+                OPÇÃO 2:
+
+                from django import forms
+                from apps.galeria.models import Fotografia
+
+                class FotografiaForms(forms.ModelForm):
+                    class Meta:
+                        model = Fotografia
+                        exclude = ['publicada',]
+
+                    # Define o valor inicial para o campo 'descricao'
+                    initial_descricao = "Seu texto pré-pronto aqui"
+
+                    widgets = {
+                        'nome': forms.TextInput(attrs={'class': 'form-control'}),
+                        'legenda': forms.TextInput(attrs={'class': 'form-control'}),
+                        'categoria': forms.Select(attrs={'class': 'form-control'}),
+                        'foto': forms.FileInput(attrs={'class': 'form-control'}),
+                        'data_fotografia': forms.DateInput(
+                            format='%d/%m/%Y',
+                            attrs={
+                                'type': 'date',
+                                'class': 'form-control'
+                            }
+                        ),
+                        'categoria': forms.Select(attrs={'class': 'form-control'}),
+                    }
+
+                    # Define o campo 'descricao' com o valor inicial
+                    descricao = forms.CharField(
+                        widget=forms.Textarea(attrs={'class': 'form-control'}),
+                        initial=initial_descricao
+                    )
+
+
+
+                 Explica como fazer uma opção de texto melhor
+
+                            Curso Django: CRUD e persistência no S3
+                        02.04 : Lógica de novo item
+
+            1-  Em views.py de galeria:
+                1-  from apps.galeria.forms import FotografiaForms
+
+                    def nova_imagem(request):
+                    form = FotografiaForms
+                    return render(request, 'galeria/nova_imagem.html', {'form':form})
+            2-  Em forms.py, add lofo após o exclude
+
+                    labels = {
+                        'descricao': 'Descrição',
+                        'data_fotografia': 'Data de registro',
+                        'usuario': 'Usuário'
+                    } 
+
+            3-  No inicio da def nova imagem, colocar a logica de login
+            
+            4-  Fazer a logica de salva, vai ficar todo assim:
+
+                    def nova_imagem(request):
+
+                        if not request.user.is_authenticated:
+                            messages.error(request, "Usuário não logado")
+                            return redirect('login')
+
+                        form = FotografiaForms
+                        if request.method == 'POST':
+                            form = FotografiaForms(request.POST)
+                            if form.is_valid():
+                                form.save()
+                                messages.success(request, 'Nova fotografia cadastrada')
+                                return redirect('index')
+
+                        return render(request, 'galeria/nova_imagem.html', {'form':form})     
+         
+                            Curso Django: CRUD e persistência no S3
+                        02.05 : Templates e botões
+            1-  Em nova_imagem.html, alterar o nome do botão e o form vai ficar:
+                <form action="{% url 'nova_imagem' %}" method="POST" enctype="multipart/form-data">
+            2-  Em views.py, mudar o form apos o if para :
+                    form = FotografiaForms(request.POST, request.FILES)
+
+            3-  Criar botões de editar e apagar imagem em imagem.html
+                    
+
+                         Curso Django: CRUD e persistência no S3
+                        03.02 : Edição de fotografias
+
+            1-  Usar o mesmo formulario do nova_imagem em editar_imagem
+                1-  No imagem.html, no botão:
+                        {% url 'editar_imagem' fotografia.id %}"
+                    Assim estou passando o id do objeto do banco de dados que esta sendo usado nessa pagina.
+            2-  Em urls.py, eu boto /<int:foto_id>
+
+            3-  Em views.py:
+                def editar_imagem(request, foto_id):
+                    fotografia = Fotografia.objects.get(id=foto_id)
+                    form = FotografiaForms(instance=fotografia)
+
+                    if request.metho == 'POST':
+                        form = FotografiaForms(request.POST, request.FILES, instance=fotografia)
+                        if form.is_valid():
+                            form.save()
+                            messages.success(request, 'Fotografia alterada')
+                            return redirect('index')
+
+                    return render(request, 'galeria/editar_imagem.html', {'form': form, 'foto_id': foto_id})  
+                    
+!!!!!!!!! Esse processo pode ser usado para criar os laudos, talvez pré criando uma tabela com os textos
+que quero, acesso a tabela pelo id e mando fazer o form com esses dados!!!!!!!!
+
+            4-  Criei o editar_imagem.html dentro de galeria e colei o nova_imagem lá dentro
+            mudando só o form action para "{% url 'editar_imagem' foto_id %}" e mudar o botão
+
+                        Curso Django: CRUD e persistência no S3
+                        03.03 : Deleção de fotografias
+
+            1-  Vai usar o id da fotografia do mesmo jeito que antes.
+                    "{% url 'deletar_imagem' fotografia.id %}"
+            2-  Em urls de galeria  
+                1-   Também por /<int:foto_id>
+
+            3-  Em views.py:
+                    def deletar_imagem(request, foto_id):
+                        fotografia = Fotografia.objects.get(id=foto_id)
+                        fotografia.delete()
+                        messages.success(request, 'Deleção feita com sucesso')
+                        return redirect('index')      
+
+                        Curso Django: CRUD e persistência no S3
+                        03.04: Funcionalidade de filtro
+
+            1-  Em index.html, nos botões que servem de filtro, vou alterar todos para:
+                    <ul class="tags__lista">
+                        <li class="tags__tag"><a href="{% url 'filtro' 'NEBULOSA' %}" class="btn" style="color:#c9c9c9;">Nebulosa</a></li>
+                        <li class="tags__tag"><a href="{% url 'filtro' 'ESTRELA' %}" class="btn" style="color:#c9c9c9;">Estrela</a></li>
+                        <li class="tags__tag"><a href="{% url 'filtro' 'GALAXIA' %}" class="btn" style="color:#c9c9c9;">Galáxia</a></li>
+                        <li class="tags__tag"><a href="{% url 'filtro' 'PLANETA' %}" class="btn" style="color:#c9c9c9;">Planeta</a></li>
+                    </ul>
+
+            2-  Em urls.py  
+                path('filtro/<str:categoria>',filtro, name='filtro')
+
+            3-  em views.py de galeria:
+                def filtro(request, categoria):
+                    fotografias = Fotografia.objects.order_by("-data_fotogragia").filter(publicada=True, categoria=categoria)
+
+                    return render(request, 'galeria/index.html', {"cards": fotografias})
+
+            4-  Em views.py, no buscar, eu posso mudar para
+                    return render (request, "galeria/index.html", {"cards": fotografias})
+
+            Assim posso apagar o buscar.html 
+
+                        Curso Django: CRUD e persistência no S3
+                        04.03: Criando um bucket no S3 
+            1-  Criei conta na AWS e um bucket.
+
+                        Curso Django: CRUD e persistência no S3
+                        04.04: Criando um usuário na IAM
+
+            1-  Criando um iam.
+                1-  Anderson-Bem
+
+                        Curso Django: CRUD e persistência no S3
+                        05.02 : Conexão com o Django
+
+            1-  Em settings.py do setup
+                1-pip install django-storages
+                pip install boto3
+                pip freeze requirements.txt
+
+                2-  Acima de STATIC_URL
+
+                    
+
+                        Curso Django: CRUD e persistência no S3
+                        05.03 Fotografias no bucket
+
+            1-  Em settings.py do setup  
+                # Static files (CSS, JavaScript, Images)
+                # https://docs.djangoproject.com/en/4.2/howto/static-files/
+
+
+                DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+                STATICFILES_STORAGE = 'storages.backends.s3boto3.S3StaticStorage'
+
+
+                STATIC_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/static/'
+
+                    E
+                MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/media/'
+
+            2-  Em INSTALLED_APPS:
+                'storages',   
+
+            3-  eM URLS.PY do setup:
+
+                from django.contrib import admin
+                from django.urls import path, include
+                from django.conf import settings
+                from django.conf.urls.static import static
+
+
+                urlpatterns = [
+                    path('admin/', admin.site.urls),
+                    path('', include('apps.galeria.urls')),
+                    path('', include('apps.usuarios.urls')),
+                ]
+
+
+                if settings.DEBUG:
+                    urlpatterns += + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+                    urlpatterns += + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+
+            4-  Na lupa, buscar assets/ e trocar por assets/
+
+            5-  python manage.py collectstatic e esperar, demora
+
+            6-  Você pode usar o .env tbm, fica assim:
+                AWS_ACCESS_KEY_ID = str(os.getenv('AWS_ACCESS_KEY_ID'))
+
+                AWS_SECRET_ACCESS_KEY = str(os.getenv('AWS_SECRET_ACCESS_KEY'))
+
+                AWS_STORAGE_BUCKET_NAME = str(os.getenv('AWS_STORAGE_BUCKET_NAME'))
+
+            
+
+                            Curso Django: CRUD e persistência no S3
+                        05.04: Melhorando a segurança
+
+            1-  Dir na raiz Scripts
+                1-  secret_key_generator.py
+                    1-  from django.core.management.utils import get_random_secret_key
+
+                        print(get_random_secret_key())
+
+            2-  no terminal cd Scripts
+                python secret_key_generator.py
+
+                1-  O que gerou, vc troca a secret_key do .env
+
+                    
+
+
+
+
+
+
+

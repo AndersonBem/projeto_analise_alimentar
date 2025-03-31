@@ -1,0 +1,31 @@
+Dia 1 31/03/2023
+
+Criei a pasta do projeto, criei a virtualenv, instalei o Django, fiz um requirements e intalei o django
+ -Comandos:
+    -python -m venv venv
+    -venv/Scripts/activate
+    -pip install django
+    -python.exe -m pip install --upgrade pip
+    -pip freeze > requirements.txt
+    -django-admin startproject setup .
+    -python manage.py runserver 8001
+Em setting:
+   - LANGUAGE_CODE = 'pt-br';  TIME_ZONE = 'America/Sao_Paulo'
+
+ -Comandos:
+   - pip install python-dotenv
+   - pip freeze > requirements.txt
+Criei o.env e colei a secret key lá, em setting:
+   from pathlib import Path, os
+   from dotenv import load_dotenv
+   load_dotenv()
+   SECRET_KEY = str(os.getenv('SECRET_KEY'))
+
+Criei o .gitignore e no site https://www.toptal.com/developers/gitignore/ peguei do Django
+
+-Comandos:
+   - git init
+   - git add .
+   - git commit -m "primeiro commit" 
+   - git remote add origin https://github.com/AndersonBem/projeto_analise_alimentar.git
+   - git push origin master
