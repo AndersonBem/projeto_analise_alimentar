@@ -82,8 +82,12 @@ WSGI_APPLICATION = 'setup.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'projeto_analise_alimentar',
+        'USER': 'root',
+        'PASSWORD': 'A300621a@',
+        'HOST': 'localhost',  # Ou o IP do servidor
+        'PORT': '3306',  # Porta padrão do MySQL
     }
 }
 
