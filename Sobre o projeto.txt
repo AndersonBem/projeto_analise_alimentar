@@ -29,3 +29,22 @@ Criei o .gitignore e no site https://www.toptal.com/developers/gitignore/ peguei
    - git commit -m "primeiro commit" 
    - git remote add origin https://github.com/AndersonBem/projeto_analise_alimentar.git
    - git push origin master
+   - python manage.py startapp diario 
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'apps.diario',
+]
+
+Em apps.py dentro de diario, dentro de apps:
+from django.apps import AppConfig
+
+
+class DiarioConfig(AppConfig):
+    default_auto_field = 'django.db.models.BigAutoField'
+    name = 'apps.diario'
