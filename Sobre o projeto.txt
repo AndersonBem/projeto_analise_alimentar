@@ -48,3 +48,18 @@ from django.apps import AppConfig
 class DiarioConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'apps.diario'
+
+Cria a função que renderiza a pagina 
+   Em diario.views.py
+   from django.http import HttpResponse
+
+E cria o URL da pagina
+   diario.urls.py
+
+se criar um novo app precisa criar um novo urls.py nele e incluir no urls.py do setup
+
+Criei a pasta template, com o index lá dentro
+criei a pasta static com assets e style lá dentro depois dei um python manage.py collectstatic
+
+No hrf do html coloquei o <link rel="stylesheet" href="{% static '/styles/style.css' %}">
+esse é o local onde vai ficar os css, no começo da pagiga html precisa de {% load static %}
