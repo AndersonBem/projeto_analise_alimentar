@@ -1,0 +1,39 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Minha Aplicação{% endblock %}</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static '/styles/style.css' %}">
+</head>
+<body>
+    <header>
+        <nav class="menu">
+            <a href="/admin/" class="botao">Admin</a>
+            <a href="{% url 'login' %}" class="botao">Login</a>
+            <a href="{% url 'lista_registros' %}" class="botao">Registros</a>
+            <a class="botao">Botão2</a>
+            <a class="botao">Botão2</a>
+            <a class="botao">Botão2</a>
+            <a class="botao">Botão2</a>
+            <a class="botao">Botão2</a>
+            {% if user.is_authenticated %}
+            <form action="{% url 'logout' %}" method="post" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="logout-button">Sair</button>
+            </form>
+{% endif %}
+
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        <!-- O conteúdo das páginas será inserido aqui -->
+        {% endblock %}
+    </main>
+</body>
+</html>

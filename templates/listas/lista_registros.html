@@ -1,0 +1,32 @@
+{% extends "principal/base.html" %}
+{% block title %}Lista de Registros{% endblock %}
+
+{% block content %}
+<div class="registros-container">
+    <h1>Registros</h1>
+    <table class="tabela-registros">
+        <thead>
+            <tr>
+                {% if user.is_superuser %}
+                    <th>ID</th>
+                    <th>Usuário</th>
+                {% endif %}
+                <th>Data</th>
+                <th>Hora</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for registro in registros %}
+                <tr>
+                    {% if user.is_superuser %}
+                        <td>{{ registro.id }}</td>
+                        <td>{{ registro.usuario.username }}</td>
+                    {% endif %}
+                    <td>{{ registro.data }}</td>
+                    <td>{{ registro.hora }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,16 +1,15 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário de Login</title>
-    <link rel="stylesheet" href="{% static '/styles/style.css' %}">
-</head>
-<body>
+{% extends "principal/base.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
     <div class="container">
         <h1>Texto</h1>
-        
+        {% if messages %}
+            {% for message in messages %}
+                <p style="color: red;">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
         <form class="login-form" method="POST" action="{% url 'login' %}">
             {% csrf_token %}
             <div class="form-group">
@@ -21,8 +20,7 @@
                 <label for="senha">Senha</label>
                 <input type="password" id="senha" name="senha">
             </div>
-            <button type="submit">Entrar</button>
+            <button type="submit" class="botao">Entrar</button>
         </form> 
     </div>
-</body>
-</html>
+{% endblock %}
